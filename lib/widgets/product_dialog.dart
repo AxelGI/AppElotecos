@@ -274,27 +274,7 @@ class _ProductDialogState extends State<ProductDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '¿Sabor de Maruchan?',
-              style: TextStyle(
-                fontSize: 18,
-                color: selectedSopa == null ? Colors.red : Colors.black,
-                fontWeight: selectedSopa == null ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-            if (selectedSopa == null)
-              const Text(
-                '*',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ],
-        ),
+        const Text('¿Sabor de Maruchan?', style: TextStyle(fontSize: 18)), // ← Quitar validación visual
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -322,27 +302,7 @@ class _ProductDialogState extends State<ProductDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '¿Sabor Bebida?',
-              style: TextStyle(
-                fontSize: 18,
-                color: selectedBebida == null ? Colors.red : Colors.black,
-                fontWeight: selectedBebida == null ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-            if (selectedBebida == null)
-              const Text(
-                '*',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ],
-        ),
+        const Text('¿Sabor Bebida?', style: TextStyle(fontSize: 18)), // ← Quitar validación visual
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -370,27 +330,7 @@ class _ProductDialogState extends State<ProductDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '¿Con que cubierta?',
-              style: TextStyle(
-                fontSize: 18,
-                color: selectedFrituras.isEmpty ? Colors.red : Colors.black,
-                fontWeight: selectedFrituras.isEmpty ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-            if (selectedFrituras.isEmpty)
-              const Text(
-                '*',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ],
-        ),
+        const Text('¿Con que cubierta?', style: TextStyle(fontSize: 18)), // ← Quitar validación visual
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -422,27 +362,7 @@ class _ProductDialogState extends State<ProductDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        Row(
-          children: [
-            Text(
-              '¿Cuál bolsa papas?',
-              style: TextStyle(
-                fontSize: 18,
-                color: selectedBolsapapas == null ? Colors.red : Colors.black,
-                fontWeight: selectedBolsapapas == null ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-            if (selectedBolsapapas == null)
-              const Text(
-                '*',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ],
-        ),
+        const Text('¿Cuál bolsa papas?', style: TextStyle(fontSize: 18)), // ← Quitar validación visual
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -573,10 +493,10 @@ class _ProductDialogState extends State<ProductDialog> {
   bool _canAddProduct() {
     if (selectedProduct == null) return false;
     if (selectedSize.isEmpty) return false;
-    if (selectedProduct!.sopa != null && selectedSopa == null) return false;
-    if (_showFrituraSection() && selectedFrituras.isEmpty) return false;
-    if (_showBolsapapaSection() && selectedBolsapapas == null) return false;
-    if (selectedProduct!.bebida != null && selectedBebida == null) return false;
+    //if (selectedProduct!.sopa != null && selectedSopa == null) return false;
+    //     if (_showFrituraSection() && selectedFrituras.isEmpty) return false;
+    //     if (_showBolsapapaSection() && selectedBolsapapas == null) return false;
+    //     if (selectedProduct!.bebida != null && selectedBebida == null) return false;
     return true;
   }
 

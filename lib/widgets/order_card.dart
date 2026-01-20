@@ -337,7 +337,6 @@ class _OrderCardState extends State<OrderCard> {
     );
   }
 
-  // En OrderCard, cambia:
   void _showEditProductDialog(ProductOrder productOrder) {
     showDialog(
       context: context,

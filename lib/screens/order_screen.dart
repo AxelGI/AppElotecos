@@ -235,16 +235,6 @@ class _OrderScreenState extends State<OrderScreen> {
 
     _sacarTotal(orderToEdit: orderToEdit);
 
-
-    _showProductDialog(
-      context,
-      onComplete: () {
-        setState(() {
-          _isEditingOrder = false;
-        });
-        _loadOrders();
-      },
-    );
   }
 
 
@@ -257,14 +247,6 @@ class _OrderScreenState extends State<OrderScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: const Icon(Icons.edit, color: Colors.blue),
-                title: const Text('Editar orden'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _editOrder(order);
-                },
-              ),
               ListTile(
                 leading: const Icon(Icons.content_copy, color: Colors.green),
                 title: const Text('Duplicar orden'),
@@ -279,14 +261,6 @@ class _OrderScreenState extends State<OrderScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   _deleteOrder(order);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.print, color: Colors.orange),
-                title: const Text('Imprimir orden'),
-                onTap: () {
-                  Navigator.pop(context);
-                  PrintService.printOrder(order);
                 },
               ),
               const SizedBox(height: 10),

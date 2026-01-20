@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product_order.dart';
 import '../utils/constants.dart';
+import 'edit_product_dialog.dart';
 
 class OrderSummaryDialog extends StatelessWidget {
   final List<ProductOrder> productOrders;
@@ -28,7 +29,7 @@ class OrderSummaryDialog extends StatelessWidget {
         child: Column(
           children: [
             for (ProductOrder productOrder in productOrders)
-              _buildProductSummary(productOrder),
+              _buildProductSummary(productOrder, context),
             const Divider(thickness: 5),
             Text(
               '${AppMessages.total}: \$${total.toStringAsFixed(2)}',
@@ -57,7 +58,7 @@ class OrderSummaryDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildProductSummary(ProductOrder productOrder) {
+  Widget _buildProductSummary(ProductOrder productOrder, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -78,15 +79,26 @@ class OrderSummaryDialog extends StatelessWidget {
               },
             ),
             Expanded(
-              child: Text(
-                productOrder.product.name,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              child: InkWell(
+                onTap: () {
+                  // Mostrar dialog de edición
+                  _showEditProductDialog(productOrder, context);
+                },
+                child: Text(
+                  productOrder.product.name,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             IconButton(
               onPressed: () => onRemoveProduct(productOrder),
               icon: const Icon(Icons.delete_forever, color: Colors.redAccent),
               tooltip: AppMessages.deleteProduct,
+            ),
+            IconButton(
+              onPressed: () => _showEditProductDialog(productOrder, context),
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              tooltip: 'Editar producto',
             ),
           ],
         ),
@@ -137,6 +149,29 @@ class OrderSummaryDialog extends StatelessWidget {
 
         const SizedBox(height: 16),
       ],
+    );
+  }
+
+// En OrderSummaryDialog, cambia _showEditProductDialog:
+  void _showEditProductDialog(ProductOrder productOrder, BuildContext dialogContext) {
+    // Usar dialogContext en lugar de context
+    showDialog(
+      context: dialogContext,
+      builder: (context) => EditProductDialog(
+        productOrder: productOrder,
+        onSave: (updatedProductOrder) {
+          final index = productOrders.indexOf(productOrder);
+          if (index != -1) {
+            productOrders[index] = updatedProductOrder;
+            // Necesitamos notificar al padre
+            onUpdateQuantity(updatedProductOrder, updatedProductOrder.cantidad);
+          }
+        },
+        onDelete: () {
+          onRemoveProduct(productOrder);
+          Navigator.pop(dialogContext);
+        },
+      ),
     );
   }
 

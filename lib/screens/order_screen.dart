@@ -233,6 +233,9 @@ class _OrderScreenState extends State<OrderScreen> {
       orders.removeWhere((o) => o.index == editedOrderIndex);
     });
 
+    _sacarTotal(orderToEdit: orderToEdit);
+
+
     _showProductDialog(
       context,
       onComplete: () {
@@ -243,6 +246,7 @@ class _OrderScreenState extends State<OrderScreen> {
       },
     );
   }
+
 
   void _showEditOptionsDialog(Order order, BuildContext context) {
     showModalBottomSheet(

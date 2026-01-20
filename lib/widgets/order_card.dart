@@ -5,6 +5,7 @@ import '../models/product_order.dart';
 import '../services/order_service.dart';
 import '../utils/constants.dart';
 import '../widgets/order_cost_fields.dart';
+import 'edit_product_dialog.dart';
 
 class OrderCard extends StatefulWidget {
   final Order order;
@@ -213,17 +214,28 @@ class _OrderCardState extends State<OrderCard> {
   }
 
   Widget _buildProductItem(ProductOrder productOrder) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+    return InkWell(
+      onTap: () {
+        // Mostrar dialog para editar este producto específico
+        _showEditProductDialog(productOrder);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'x${productOrder.cantidad} ${productOrder.product.name}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    'x${productOrder.cantidad} ${productOrder.product.name}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 16),
+                    onPressed: () => _showEditProductDialog(productOrder),
+                  ),
+                ],
               ),
               Text(
                 '\$${productOrder.totalPrice.toStringAsFixed(2)}',
@@ -322,6 +334,30 @@ class _OrderCardState extends State<OrderCard> {
             ],
           ),
       ],
+    );
+  }
+
+  // En OrderCard, cambia:
+  void _showEditProductDialog(ProductOrder productOrder) {
+    showDialog(
+      context: context,
+      builder: (context) => EditProductDialog(
+        productOrder: productOrder,
+        onSave: (updatedProductOrder) {
+          // CORRECCIÓN: No necesitas buscar en orders, solo en esta orden
+          final productIndex = widget.order.productOrders.indexOf(productOrder);
+          if (productIndex != -1) {
+            // Solo actualiza esta orden específica
+            widget.order.productOrders[productIndex] = updatedProductOrder;
+            widget.setParentState(() {});
+          }
+        },
+        onDelete: () {
+          widget.order.productOrders.remove(productOrder);
+          widget.setParentState(() {});
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 

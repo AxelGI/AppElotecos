@@ -27,6 +27,7 @@ class OrderDetailsWidget extends StatelessWidget {
           }).toList(),
         ),
         const SizedBox(height: 16),
+        const Divider(),
         _buildSubtotal(order),
       ],
     );

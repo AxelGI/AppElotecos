@@ -59,6 +59,15 @@ class OrderService {
     });
   }
 
+  // En order_service.dart
+  static void setStatus(Order order, String newStatus, Function(void Function()) setParentState) {
+    setParentState(() {
+      order.status = newStatus;
+    });
+    // Guardar cambios si es necesario
+    // saveOrders(orders);
+  }
+
   static void togglePlace(Order order, Function(void Function()) setState) async {
     setState(() {
       if (order.place == 'Local') {

@@ -77,29 +77,13 @@ class _OrderCardState extends State<OrderCard> {
             ),
           ),
 
-          // Estado y lugar juntos para ahorrar espacio cuando está completado
-          if (isCompleted)
-            Row(
-              children: [
-                Chip(
-                  label: Text(widget.order.status, style: TextStyle(fontSize: 12)),
-                  backgroundColor: _getStatusColor(widget.order.status),
-                ),
-                const SizedBox(width: 4),
-                Chip(
-                  label: Text(widget.order.place, style: TextStyle(fontSize: 12)),
-                  backgroundColor: _getPlaceColor(widget.order.place),
-                ),
-              ],
-            )
-          else
-            Row(
-              children: [
-                _buildStatusButton(),
-                const SizedBox(width: 8),
-                _buildPlaceButton(),
-              ],
-            ),
+          Row(
+            children: [
+              _buildStatusButton(),
+              const SizedBox(width: 8),
+              if (!isCompleted) _buildPlaceButton(),
+            ],
+          ),
 
           // Botón para expandir/contraer
           IconButton(
@@ -180,8 +164,30 @@ class _OrderCardState extends State<OrderCard> {
 
           const SizedBox(height: 12),
 
-          // Resumen de orden (siempre visible, pero más compacto si está completado)
+          // Resumen de orden (siempre visible)
           _buildOrderSummary(isCompleted),
+
+          // NUEVO: Botón para cambiar estado incluso cuando está completada
+          if (isCompleted) ...[
+            const SizedBox(height: 16),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Cambiar estado de "Completado" a "Preparando"
+                  OrderService.setStatus(widget.order, 'Preparando', widget.setParentState);
+                  // Opcional: Expandir automáticamente
+                  setState(() {
+                    _isExpanded = true;
+                  });
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Reactivar orden'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                ),
+              ),
+            ),
+          ],
 
           // Botones de acción solo si no está completado
           if (!isCompleted) ...[
@@ -363,8 +369,7 @@ class _OrderCardState extends State<OrderCard> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'Preparando': return Colors.yellow;
-      case 'Completa': return Colors.grey[600]!;
-      case 'Completado': return Colors.grey[600]!;
+      case 'Completa': return Colors.lightGreen;
       case 'Listo': return Colors.lightGreen;
       default: return Colors.deepOrangeAccent;
     }
@@ -373,10 +378,9 @@ class _OrderCardState extends State<OrderCard> {
   Color _getPlaceColor(String place) {
     switch (place) {
       case 'Local': return Colors.yellow;
-      case 'Llevar': return Colors.orange;
+      case 'Llevar': return Colors.orangeAccent;
       case 'Envio': return Colors.redAccent;
       case 'Órale': return Colors.green;
-      case 'Express': return Colors.blue;
       default: return Colors.yellow;
     }
   }

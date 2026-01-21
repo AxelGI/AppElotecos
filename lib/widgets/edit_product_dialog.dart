@@ -1,6 +1,5 @@
 // widgets/edit_product_dialog.dart
 import 'package:flutter/material.dart';
-import '../models/product.dart';
 import '../models/product_order.dart';
 
 class EditProductDialog extends StatefulWidget {

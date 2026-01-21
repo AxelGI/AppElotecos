@@ -17,104 +17,113 @@ class OrderCostFields extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const Divider(),
+        SizedBox(height: 16),
         // Campo de costo extra
-        TextFormField(
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          initialValue: order.extra?.toStringAsFixed(2) ?? '',
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+        Row(
+          children: [
+            Expanded(
+                child: TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  initialValue: order.extra?.toStringAsFixed(2) ?? '',
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Costo extra',
+                    prefixText: '\$',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      setParentState(() {
+                        order.extra = 0.0;
+                        order.updateChange();
+                      });
+                      return;
+                    }
+
+                    double? extra = double.tryParse(value);
+                    if (extra != null) {
+                      setParentState(() {
+                        order.extra = extra;
+                        order.updateChange();
+                      });
+                    }
+                  },
+                )
+            ),
+
+            // Campo de costo envío
+            Expanded(
+                child: TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  initialValue: order.costoEnvio?.toStringAsFixed(2) ?? '',
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Costo envío',
+                    prefixText: '\$',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      setParentState(() {
+                        order.costoEnvio = 0.0;
+                        order.updateChange();
+                      });
+                      return;
+                    }
+
+                    double? envio = double.tryParse(value);
+                    if (envio != null) {
+                      setParentState(() {
+                        order.costoEnvio = envio;
+                        order.updateChange();
+                      });
+                    }
+                  },
+                )
+            ),
+
+            // Campo de pago cliente
+            Expanded(
+                child: TextFormField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  initialValue: order.pagoCliente?.toStringAsFixed(2) ?? '',
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+                  ],
+                  decoration: const InputDecoration(
+                    labelText: 'Pago cliente',
+                    prefixText: '\$',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      setParentState(() {
+                        order.pagoCliente = 0.0;
+                        order.updateChange();
+                      });
+                      return;
+                    }
+
+                    double? pago = double.tryParse(value);
+                    if (pago != null) {
+                      setParentState(() {
+                        order.pagoCliente = pago;
+                        order.updateChange();
+                      });
+                    }
+                  },
+                )
+            ),
+
           ],
-          decoration: const InputDecoration(
-            labelText: 'Costo extra',
-            prefixText: '\$',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
-          onChanged: (value) {
-            if (value.isEmpty) {
-              setParentState(() {
-                order.extra = 0.0;
-                order.updateChange();
-              });
-              return;
-            }
-
-            double? extra = double.tryParse(value);
-            if (extra != null) {
-              setParentState(() {
-                order.extra = extra;
-                order.updateChange();
-              });
-            }
-          },
-        ),
-
-        const SizedBox(height: 8),
-
-        // Campo de costo envío
-        TextFormField(
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          initialValue: order.costoEnvio?.toStringAsFixed(2) ?? '',
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
-          ],
-          decoration: const InputDecoration(
-            labelText: 'Costo envío',
-            prefixText: '\$',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
-          onChanged: (value) {
-            if (value.isEmpty) {
-              setParentState(() {
-                order.costoEnvio = 0.0;
-                order.updateChange();
-              });
-              return;
-            }
-
-            double? envio = double.tryParse(value);
-            if (envio != null) {
-              setParentState(() {
-                order.costoEnvio = envio;
-                order.updateChange();
-              });
-            }
-          },
-        ),
-
-        const SizedBox(height: 8),
-
-        // Campo de pago cliente
-        TextFormField(
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          initialValue: order.pagoCliente?.toStringAsFixed(2) ?? '',
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
-          ],
-          decoration: const InputDecoration(
-            labelText: 'Pago cliente',
-            prefixText: '\$',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
-          onChanged: (value) {
-            if (value.isEmpty) {
-              setParentState(() {
-                order.pagoCliente = 0.0;
-                order.updateChange();
-              });
-              return;
-            }
-
-            double? pago = double.tryParse(value);
-            if (pago != null) {
-              setParentState(() {
-                order.pagoCliente = pago;
-                order.updateChange();
-              });
-            }
-          },
         ),
 
         // Mostrar cambio automáticamente
